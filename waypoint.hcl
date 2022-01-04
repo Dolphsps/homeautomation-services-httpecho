@@ -7,19 +7,24 @@ app "http-echo" {
       image = "hashicorp/http-echo"
       tag   = "latest"
     }
+
+
+    registry {
+      use "docker" {
+        image = "hashicorp/http-echo"
+        tag   = "latest"
+        local = true
+      }
+    }
   }
 
 
-  deploy { /*
+  deploy {
     use "nomad-jobspec" {
       // Templated to perhaps bring in the artifact from a previous
       // build/registry, entrypoint env vars, etc.
       jobspec = templatefile("${path.app}/app.nomad.tpl")
-    }
-  */
 
-    use "docker" {
-      command = ["-listen", ":3000", "-text", "hello"]
     }
   }
 }
